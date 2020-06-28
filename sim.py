@@ -48,21 +48,41 @@ ubi = 0
 
 print(income,bills,tax_income_normal,ubi)
 
-person = cit(income,bills,tax_income_normal,ubi)
-person_ubi = cit(income,bills,tax_income_ubi,500)
+person = []
+person_ubi = []
 
 months = []
 count = 0
+
+
+for i in range(0,25):
+    income = gen_rand_income()
+    bill_perc =  random.randint(50,65) / 100
+    bills = income * bill_perc
+    tax_income_normal = 0.25
+    tax_income_ubi = 0.30
+    ubi = 0
+    person.append(cit(income,bills,tax_income_normal,ubi))
+    person_ubi.append(cit(income,bills,tax_income_ubi,500))
+
+
 for year in range(0,1):
 
     for month in range(1,13):
-        person.monthly()
-        person_ubi.monthly()
+        for item in person:
+        
+            item.monthly()
+        for ubi_item in person_ubi:
+        
+            ubi_item.monthly()
         months.append(count)
         count += 1
+        
+for item in person:    
+    ax.plot(months,item.funds_list)
+for ubi_item in person_ubi:    
+    ax.plot(months,ubi_item.funds_list,color='red')
     
-ax.plot(months,person.funds_list, label="No UBI")
-ax.plot(months,person_ubi.funds_list, label="With UBI")
 plt.ticklabel_format(style = 'plain')
 ax.legend()
 plt.show()
